@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class Toad : MonoBehaviour
 {
-
+    
     public int Player;
     [SerializeField]
     private Transform[] JumpPathPoints;
     [SerializeField]
     private float jumpSpeed;
+    [SerializeField]
+    private Tongue tongue;
     [SerializeField]
     private Sprite[] ToadSprites;
     private bool grounded, reachedTargetPosition;
@@ -17,9 +19,10 @@ public class Toad : MonoBehaviour
     private Vector2 jumpDirection;
 
     private SpriteRenderer spriteRenderer;
-
+    
     private void Awake()
     {
+        
         spriteRenderer = GetComponent<SpriteRenderer>();
         grounded = true;
     }
@@ -32,26 +35,29 @@ public class Toad : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetButtonDown("Action"+Player) && grounded)
-        {
-            Debug.Log("Jump!");
-            jumpDirection = positionIndex == 0 ? Vector2.right : Vector2.left;
+        
+            if (Input.GetButtonDown("Action" + Player) && grounded)
+            {
+                Debug.Log("Jump!");
+                jumpDirection = positionIndex == 0 ? Vector2.right : Vector2.left;
 
-            spriteRenderer.sprite = ToadSprites[1];
-            grounded = false;
-        }
-        else if (Input.GetButtonDown("Action" + Player))
-        {
-            StartCoroutine(Attack());
-        }
-        Jump();
+                spriteRenderer.sprite = ToadSprites[1];
+                grounded = false;
+            }
+            else if (Input.GetButtonDown("Action" + Player))
+            {
+                StartCoroutine(Attack());
+            }
+            Jump();
+        
+        
     }
 
     IEnumerator Attack()
     {
-        Debug.Log("Attack Start!");
+        tongue.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.7f);
-        Debug.Log("Attack End");
+        tongue.gameObject.SetActive(false);
     }
     private void Jump()
     {
